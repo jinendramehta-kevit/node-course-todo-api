@@ -10,7 +10,6 @@ MongoClient.connect('mongodb://localhost:27017/', {
         return console.log('Unable to connect to MongoDB server');
     }
     db = client.db(dbName);
-    
 
     // db.collection('Todos').find().count().then((docs) => {
     //     console.log(JSON.stringify(docs,undefined,2));
