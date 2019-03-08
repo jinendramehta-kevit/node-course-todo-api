@@ -6,6 +6,7 @@ const { ObjectID } = require('mongodb');
 const mongoose = require('./db/mongoose');
 const Todo = require('./models/todo');
 const User = require('./models/user');
+const authenticate = require('./middleware/authenticate');
 
 var app = express();
 app.use(bodyParser.json());
@@ -47,6 +48,10 @@ app.get('/todos/:id', (req, res) => {
             res.send(todo);
         }).catch((e) => res.status(404).send());
     }
+});
+
+app.get('/users/me', authenticate, (req, res) => {
+    res.send(req.user);
 });
 
 app.delete('/todos/:id', (req, res) => {
