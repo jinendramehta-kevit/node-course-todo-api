@@ -48,11 +48,19 @@ UserSchema.methods.generateAuthToken = function () {
 
     user.tokens.push({ access, token });
 
-    user.save().then(() => {
+    return user.save().then(() => {
         return token;
     });
+};
 
-    return token;
+UserSchema.methods.removeToken = function (token) {
+    var user = this;
+
+    return user.updateOne({
+        $pull: {
+            tokens: {token}
+        }
+    });
 };
 
 UserSchema.statics.findByToken = function (token) {
@@ -75,6 +83,7 @@ UserSchema.statics.findByToken = function (token) {
 UserSchema.statics.findByCredentials = function (email, password) {
     return User.findOne({ email }).then((doc) => {
         if (!doc) {
+            console.log('error');
             return Promise.reject();
         }
 
